@@ -1,8 +1,7 @@
 defmodule Pluggy.Router do
   use Plug.Router
 
-  alias Pluggy.studentController
-  alias Pluggy.UserController
+  alias Pluggy.StudentController
 
   plug Plug.Static, at: "/", from: :pluggy
   plug(:put_secret_key_base)
@@ -22,22 +21,22 @@ defmodule Pluggy.Router do
   plug(:match)
   plug(:dispatch)
 
-  get "/students",           do: studentController.index(conn)
-  get "/students/new",       do: studentController.new(conn)
-  get "/students/:id",       do: studentController.show(conn, id)
-  get "/students/:id/edit",  do: studentController.edit(conn, id)
+  get "/students",           do: StudentController.index(conn)
+  get "/students/new",       do: StudentController.new(conn)
+  get "/students/:id",       do: StudentController.show(conn, id)
+  get "/students/:id/edit",  do: StudentController.edit(conn, id)
   
-  post "/students",          do: studentController.create(conn, conn.body_params)
+  post "/students",          do: StudentController.create(conn, conn.body_params)
  
   # should be put /students/:id, but put/patch/delete are not supported without hidden inputs
-  post "/students/:id/edit", do: studentController.update(conn, id, conn.body_params)
+  post "/students/:id/edit", do: StudentController.update(conn, id, conn.body_params)
 
   # should be delete /students/:id, but put/patch/delete are not supported without hidden inputs
-  post "/students/:id/destroy", do: studentController.destroy(conn, id)
+  post "/students/:id/destroy", do: StudentController.destroy(conn, id)
 
 
-  post "/students/login",     do: studentController.login(conn, conn.body_params)
-  post "/students/logout",    do: studentController.logout(conn)
+  post "/students/login",     do: StudentController.login(conn, conn.body_params)
+  post "/students/logout",    do: StudentController.logout(conn)
 
   match _ do
     send_resp(conn, 404, "oops")

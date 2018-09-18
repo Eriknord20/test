@@ -1,4 +1,4 @@
-defmodule Pluggy.studentController do
+defmodule Pluggy.StudentController do
   
   require IEx
 
