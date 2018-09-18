@@ -1,7 +1,7 @@
 defmodule Pluggy.Router do
   use Plug.Router
 
-  alias Pluggy.FruitController
+  alias Pluggy.studentController
   alias Pluggy.UserController
 
   plug Plug.Static, at: "/", from: :pluggy
@@ -22,22 +22,22 @@ defmodule Pluggy.Router do
   plug(:match)
   plug(:dispatch)
 
-  get "/fruits",           do: FruitController.index(conn)
-  get "/fruits/new",       do: FruitController.new(conn)
-  get "/fruits/:id",       do: FruitController.show(conn, id)
-  get "/fruits/:id/edit",  do: FruitController.edit(conn, id)
+  get "/students",           do: studentController.index(conn)
+  get "/students/new",       do: studentController.new(conn)
+  get "/students/:id",       do: studentController.show(conn, id)
+  get "/students/:id/edit",  do: studentController.edit(conn, id)
   
-  post "/fruits",          do: FruitController.create(conn, conn.body_params)
+  post "/students",          do: studentController.create(conn, conn.body_params)
  
-  # should be put /fruits/:id, but put/patch/delete are not supported without hidden inputs
-  post "/fruits/:id/edit", do: FruitController.update(conn, id, conn.body_params)
+  # should be put /students/:id, but put/patch/delete are not supported without hidden inputs
+  post "/students/:id/edit", do: studentController.update(conn, id, conn.body_params)
 
-  # should be delete /fruits/:id, but put/patch/delete are not supported without hidden inputs
-  post "/fruits/:id/destroy", do: FruitController.destroy(conn, id)
+  # should be delete /students/:id, but put/patch/delete are not supported without hidden inputs
+  post "/students/:id/destroy", do: studentController.destroy(conn, id)
 
 
-  post "/users/login",     do: UserController.login(conn, conn.body_params)
-  post "/users/logout",    do: UserController.logout(conn)
+  post "/students/login",     do: studentController.login(conn, conn.body_params)
+  post "/students/logout",    do: studentController.logout(conn)
 
   match _ do
     send_resp(conn, 404, "oops")
