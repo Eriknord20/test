@@ -1,12 +1,12 @@
-<h1>Fruits.index (/fruits)</h1>
+<h1>Students.index (/students)</h1>
 
 <%= if user do %>
-	<form action="/users/logout" method="post">
+	<form action="students/logout" method="post">
 		<button type="submit">Log Out</button>
 	</form>
 <% else %>
 
-<form action="/users/login" method="post">
+<form action="/students/login" method="post">
 	<label for="username">Username</label>
 	<input type="text" name="username" id="username" />
 	<label for="password">Password</lagel>
@@ -18,14 +18,15 @@
 
 
 <ul>
-  <%= for fruit <- fruits do %>
+  <%= for student <- students do %>
     <li>
-    	<a href="/fruits/<%= fruit.id %>">
-			<%= fruit.name %> - <%= fruit.tastiness %>
+    	<a href="/students/<%= student.id %>">
+			<%= student.username %> - <%= student.id %>
 		</a>
 	</li>
   <% end %>
 </ul>
-<a href="/fruits/new">Add new fruit</a>
+<a href="/students/new">Add new student</a>
+<a href="/students/list">List all students</a>
 
 

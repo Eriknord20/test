@@ -1,0 +1,10 @@
+<h1>Students.show (/students/<%= student.id %>)</h1>
+
+<h2>
+	<a href="/students/<%= student.id %>/edit"><%= student.username %></a>
+	<form action="/students/<%= student.id %>/destroy" method="post">
+		<button type="submit">Destroy student</button>
+	</form>	
+</h2>
+<p>First name: <%= student.first_name %>
+

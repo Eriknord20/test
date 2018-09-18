@@ -1,43 +1,63 @@
-defmodule Pluggy.student do
-	
+defmodule Pluggy.Student do
+	import Poison
+	import IEx
 	defstruct(id: nil, username: "", first_name: "", last_name: "", auth: nil)
-
-	alias Pluggy.student
+	alias Pluggy.Student
 
 	def all do
-		Postgrex.query!(DB, "SELECT * FROM students", [], [pool: DBConnection.Poolboy]).rows
+		Postgrex.query!(DB, "SELECT id, username, first_name, last_name, auth FROM students", [], [pool: DBConnection.Poolboy]).rows
+		# |> to_json
 		|> to_struct_list
 	end
 
+	def get(id) when is_integer(id) do
+		Postgrex.query!(DB, "SELECT id, username, first_name, last_name, auth FROM students WHERE id = $1 LIMIT 1", [id], [pool: DBConnection.Poolboy]).rows
+		|> to_struct
+	end
 	def get(id) do
-		Postgrex.query!(DB, "SELECT * FROM students WHERE id = $1 LIMIT 1", [String.to_integer(id)], [pool: DBConnection.Poolboy]).rows
+		Postgrex.query!(DB, "SELECT id, username, first_name, last_name, auth FROM students WHERE id = $1 LIMIT 1", [String.to_integer(id)], [pool: DBConnection.Poolboy]).rows
 		|> to_struct
 	end
 
 	def update(id, params) do
-		name = params["name"]
-		tastiness = String.to_integer(params["tastiness"])
+		username = params["username"]
+		first_name = params["first_name"]
+		last_name = params["last_name"]
+		
 		id = String.to_integer(id)
-		Postgrex.query!(DB, "UPDATE students SET name = $1, tastiness = $2 WHERE id = $3", [name, tastiness, id], [pool: DBConnection.Poolboy])
+		Postgrex.query!(DB, "UPDATE students SET username = $1, first_name = $2, last_name = $3 WHERE id = $4", [username, first_name, last_name, id], [pool: DBConnection.Poolboy])
 	end
 
 	def create(params) do
-		name = params["name"]
-		tastiness = String.to_integer(params["tastiness"])
-		Postgrex.query!(DB, "INSERT INTO students (name, tastiness) VALUES ($1, $2)", [name, tastiness], [pool: DBConnection.Poolboy])	
+		first_name = params["first_name"]
+		last_name = params["last_name"]
+		username = params["username"]
+		pwd = params["pwd"]
+		hashed_password = Bcrypt.hash_pwd_salt(pwd)
+	
+		Postgrex.query!(
+		  DB,
+		  "INSERT INTO students (first_name, last_name, username, password) VALUES ($1, $2, $3, $4)",
+		  [first_name, last_name, username, hashed_password],
+		  pool: DBConnection.Poolboy
+		)
 	end
 
 	def delete(id) do
 		Postgrex.query!(DB, "DELETE FROM students WHERE id = $1", [String.to_integer(id)], [pool: DBConnection.Poolboy])	
 	end
 
-	def to_struct([[id, name, tastiness]]) do
-		%student{id: id, username: username, first_name: first_name, last_name: last_name, auth: auth}
+	def to_struct([[id, username, first_name, last_name, auth]]) do
+		%Student{id: id, username: username, first_name: first_name, last_name: last_name, auth: auth}
+		
 	end
 
 	def to_struct_list(rows) do
-		for [id, username, first_name, last_name, auth] <- rows, do: %student{id: id, username: username, first_name: first_name, last_name: last_name, auth: auth}
+		for [id, username, first_name, last_name, auth] <- rows, do: %Student{id: id, username: username, first_name: first_name, last_name: last_name, auth: auth}
 	end
+	# def to_json([[id, username, first_name, last_name, auth]]) do
+	# 	Poison.decode!(~s({'id':'id', 'username': 'username', 'first_name':'first_name', 'last_name':'last_name'}))
+	# end
 
 
 

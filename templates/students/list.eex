@@ -1,0 +1,20 @@
+<%= if student.auth == 1 do %>
+<form action="students/list" method="get" >
+    <label for="limit">Select the amont of stundets you want to group</label>
+    <input type="number" name="limit" id="limit">  
+</form> 
+<button id="formBtn" onclick="addElement">submit</button>
+
+<ul>
+  <%= for student <- students do %>
+    <li>
+    	<a href="/students/<%= student.id %>">
+			<%= student.username %> - <%= student.id %>
+		</a>
+	</li>
+  <% end %>
+</ul>
+<% else %>
+    <h1>Sorry, you're not allowed to be here</h1>
+    <form action="/students" method="get"></form>
+<% end %>

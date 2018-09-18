@@ -2,7 +2,7 @@ defmodule Pluggy.StudentController do
   
   require IEx
 
-  alias Pluggy.student
+  alias Pluggy.Student
   alias Pluggy.User
   import Pluggy.Template, only: [render: 2]
   import Plug.Conn, only: [send_resp: 3]
@@ -17,7 +17,7 @@ defmodule Pluggy.StudentController do
       _   -> User.get(session_user)
     end
 
-    send_resp(conn, 200, render("students/index", students: student.all(), user: current_user))
+    send_resp(conn, 200, render("students/index", students: Student.all(), user: current_user))
   end
   def login(conn, params) do
 		username = params["username"]
@@ -35,7 +35,7 @@ defmodule Pluggy.StudentController do
 		    [[id, password]] = result.rows
 
 		    #make sure password is correct
-		    if Bcrypt.verify_pass(pwd, password_hash) do
+		    if Bcrypt.verify_pass(pwd, password) do
 		      Plug.Conn.put_session(conn, :user_id, id)
 		      |>redirect("/students")
 		    else
@@ -47,25 +47,35 @@ defmodule Pluggy.StudentController do
 	def logout(conn) do
 		Plug.Conn.configure_session(conn, drop: true)
 		|> redirect("/students")
-	end
+  end
+  def list(conn) do
+    session_user = conn.private.plug_session["user_id"]
+
+    current_user =
+      case session_user do
+        nil -> nil
+        _ -> Student.get(session_user)
+      end 
+      # id = current_user.id
+      # IEx.pry
+    send_resp(conn, 200, render("students/list", student: current_user, students: Student.all()))
+  end
   def new(conn),          do: send_resp(conn, 200, render("students/new", []))
-  def show(conn, id),     do: send_resp(conn, 200, render("students/show", student: student.get(id)))
-  def edit(conn, id),     do: send_resp(conn, 200, render("students/edit", student: student.get(id)))
+  def show(conn, id),     do: send_resp(conn, 200, render("students/show", student: Student.get(id)))
+  def edit(conn, id),     do: send_resp(conn, 200, render("students/edit", student: Student.get(id)))
   
   def create(conn, params) do
-    student.create(params)
-    #move uploaded file from tmp-folder (might want to first check that a file was uploaded)
-    File.rename(params["file"].path, "priv/static/uploads/#{params["file"].filename}")
+    Student.create(params)
     redirect(conn, "/students")
   end
 
   def update(conn, id, params) do
-    student.update(id, params)
+    Student.update(id, params)
     redirect(conn, "/students")
   end
 
   def destroy(conn, id) do
-    student.delete(id)
+    Student.delete(id)
     redirect(conn, "/students")
   end
 

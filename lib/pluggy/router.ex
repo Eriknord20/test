@@ -22,11 +22,14 @@ defmodule Pluggy.Router do
   plug(:dispatch)
 
   get "/students",           do: StudentController.index(conn)
+  get("/students/list",      do: StudentController.list(conn))
   get "/students/new",       do: StudentController.new(conn)
   get "/students/:id",       do: StudentController.show(conn, id)
   get "/students/:id/edit",  do: StudentController.edit(conn, id)
   
   post "/students",          do: StudentController.create(conn, conn.body_params)
+  post "/students/login",     do: StudentController.login(conn, conn.body_params)
+  post "/students/logout",    do: StudentController.logout(conn)
  
   # should be put /students/:id, but put/patch/delete are not supported without hidden inputs
   post "/students/:id/edit", do: StudentController.update(conn, id, conn.body_params)
@@ -35,8 +38,6 @@ defmodule Pluggy.Router do
   post "/students/:id/destroy", do: StudentController.destroy(conn, id)
 
 
-  post "/students/login",     do: StudentController.login(conn, conn.body_params)
-  post "/students/logout",    do: StudentController.logout(conn)
 
   match _ do
     send_resp(conn, 404, "oops")
