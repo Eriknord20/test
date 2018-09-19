@@ -31,3 +31,22 @@ export function post(url:any, data:any, handler:any) {
     }
     request.send(data)
 }
+export function makeList(data:any) {
+    // Create the list element:
+    let list = document.createElement('ul')
+
+    for (let i = 0; i < data.length; i++) {
+        // Create the list item:
+        let item = document.createElement('li')
+
+        // Set its contents:
+        item.appendChild(document.createTextNode(data[i].first_name))
+
+        // Add it to the list:
+        list.appendChild(item)
+    }
+    document.body.appendChild(list)
+    console.log(list)
+    // Finally, return the constructed list:
+    return list;
+}
