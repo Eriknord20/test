@@ -12,12 +12,16 @@ AJAX.get("/students/list", (response:any) => {
     let final_result = JSON.parse(result_of_result)
     console.log(final_result);
     AJAX.makeList(final_result)
+    AJAX.postForm()
 })
+// export function test(url:any) {
+//     console.log(url)
+// }
 
 
-
-// let data = "omg=13&foo=1000"
-// AJAX.post("https://reqres.in/api/users", data, (response:any) => {
+let data = "omg=13&foo=1000" 
+// https://reqres.in/api/users
+// AJAX.post(, data, (response:any) => {
 
 // })
 
