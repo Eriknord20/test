@@ -24,19 +24,19 @@ defmodule Pluggy.Router do
   get "/students",           do: StudentController.index(conn)
   get("/students/list",      do: StudentController.list(conn))
   get "/students/new",       do: StudentController.new(conn)
-  get "/students/:id",       do: StudentController.show(conn, id)
-  get "/students/:id/edit",  do: StudentController.edit(conn, id)
   
   post "/students",          do: StudentController.create(conn, conn.body_params)
   post "/students/login",     do: StudentController.login(conn, conn.body_params)
   post "/students/logout",    do: StudentController.logout(conn)
- 
+  
   # should be put /students/:id, but put/patch/delete are not supported without hidden inputs
   post "/students/:id/edit", do: StudentController.update(conn, id, conn.body_params)
-
+  
   # should be delete /students/:id, but put/patch/delete are not supported without hidden inputs
   post "/students/:id/destroy", do: StudentController.destroy(conn, id)
-
+  
+  get "/students/:id",       do: StudentController.show(conn, id)
+  get "/students/:id/edit",  do: StudentController.edit(conn, id)
 
 
   match _ do

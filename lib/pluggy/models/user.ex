@@ -8,7 +8,8 @@ defmodule Pluggy.User do
 	def get(id) do
 		Postgrex.query!(DB, "SELECT id, username FROM students WHERE id = $1 LIMIT 1", [id],
         pool: DBConnection.Poolboy
-      ).rows |> to_struct
+	  ).rows 
+	  |> to_struct
 	end
 
 	def to_struct([[id, username]]) do

@@ -17,7 +17,7 @@ defmodule Pluggy.StudentController do
       _   -> User.get(session_user)
     end
 
-    send_resp(conn, 200, render("students/index", students: Student.all(), user: current_user))
+    send_resp(conn, 200, render("students/index", students: Student.hall(), student: current_user))
   end
   def login(conn, params) do
 		username = params["username"]
@@ -58,7 +58,8 @@ defmodule Pluggy.StudentController do
       end 
       # id = current_user.id
       # IEx.pry
-    send_resp(conn, 200, render("students/list", student: current_user, students: Student.all()))
+      
+    send_resp(conn, 200, render("students/list", student: current_user, students: Student.all() ))
   end
   def new(conn),          do: send_resp(conn, 200, render("students/new", []))
   def show(conn, id),     do: send_resp(conn, 200, render("students/show", student: Student.get(id)))

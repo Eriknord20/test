@@ -1,12 +1,17 @@
 defmodule Pluggy.Student do
-	import Poison
 	import IEx
 	defstruct(id: nil, username: "", first_name: "", last_name: "", auth: nil)
 	alias Pluggy.Student
 
 	def all do
 		Postgrex.query!(DB, "SELECT id, username, first_name, last_name, auth FROM students", [], [pool: DBConnection.Poolboy]).rows
-		# |> to_json
+		
+		|> to_struct_list
+		|> to_json
+		#|> IO.inspect
+	end
+	def hall do
+		Postgrex.query!(DB, "SELECT id, username, first_name, last_name, auth FROM students", [], [pool: DBConnection.Poolboy]).rows
 		|> to_struct_list
 	end
 
@@ -55,9 +60,11 @@ defmodule Pluggy.Student do
 	def to_struct_list(rows) do
 		for [id, username, first_name, last_name, auth] <- rows, do: %Student{id: id, username: username, first_name: first_name, last_name: last_name, auth: auth}
 	end
-	# def to_json([[id, username, first_name, last_name, auth]]) do
-	# 	Poison.decode!(~s({'id':'id', 'username': 'username', 'first_name':'first_name', 'last_name':'last_name'}))
-	# end
+	def to_json(list) do
+		
+		Poison.encode!(list)
+		
+	end
 
 
 
