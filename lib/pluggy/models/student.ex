@@ -9,7 +9,6 @@ defmodule Pluggy.Student do
     ).rows
     |> to_struct_list
     |> to_json
-
   end
 
   def hall do
@@ -54,7 +53,8 @@ defmodule Pluggy.Student do
     )
   end
 
-  def create(params) do
+  def create(conn, params) do
+    IO.puts "då"
     first_name = params["first_name"]
     last_name = params["last_name"]
     username = params["username"]
@@ -91,6 +91,10 @@ defmodule Pluggy.Student do
   end
 
   def to_json(list) do
-    Poison.encode!(list)
+    Poison.encode!(%{data: list})
+  end
+  def from_json({username, first_name, last_name, pwd}) do
+    cool = Poison.decode!(~s({username, first_name, last_name, pwd}))
+    IO.inspect cool
   end
 end

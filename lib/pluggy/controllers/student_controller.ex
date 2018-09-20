@@ -15,12 +15,13 @@ defmodule Pluggy.StudentController do
     #     nil -> nil
     #     _ -> User.get(session_user)
     #   end
-
+    IO.inspect conn.body_params
     put_resp_header(conn, "Access-Control-Allow-Origin", "*")
     |> put_resp_content_type("application/json")
-    |> send_resp(conn, 200, Student.all())
-      # render("students/index", students: Student.hall(), student: current_user)
-    end
+    |> send_resp(200, Student.all())
+
+    # render("students/index", students: Student.hall(), student: current_user)
+  end
 
   def login(conn, params) do
     username = params["username"]
@@ -70,13 +71,20 @@ defmodule Pluggy.StudentController do
     send_resp(conn, 200, "sadasdasdasdsad")
   end
 
-  def new(conn), do: send_resp(conn, 200, render("students/new", []))
+  def new(conn) do
+    put_resp_header(conn, "Access-Control-Allow-Origin", "*")
+    |> put_resp_content_type("application/json")
+    |> send_resp(200, "hfhgf")
+  end
+
   def show(conn, id), do: send_resp(conn, 200, render("students/show", student: Student.get(id)))
   def edit(conn, id), do: send_resp(conn, 200, render("students/edit", student: Student.get(id)))
 
   def create(conn, params) do
-    Student.create(params)
-    redirect(conn, "/students")
+    IO.inspect params
+    Student.from_json(params)
+    |>Student.create(params)
+    
   end
 
   def update(conn, id, params) do
