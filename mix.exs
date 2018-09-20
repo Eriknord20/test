@@ -19,6 +19,7 @@ defmodule Pluggy.MixProject do
       mod: {Pluggy, []}
     ]
   end
+
   # Run "mix help deps" to learn about dependencies.
   def deps do
     [

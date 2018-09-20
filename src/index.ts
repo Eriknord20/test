@@ -1,19 +1,51 @@
 import * as AJAX from './AJAX'
 
-AJAX.get("/students/list", (response:any) => {
-    console.log("hello???");
+AJAX.get("http://localhost:3000/students", (response:any) => {
     
     console.log(response)
-    let result = response.match(/((?<=\[)(.*?)(?=\])|\[.*?\])/)
+    // let result = response.match(/((?<=\[)(.*?)(?=\])|\[.*?\])/)
 
-    let result_of_result = result[0].replace(/(^"|"$)/,"'")
-    console.log(result_of_result);
+    // let result_of_result = response[0].replace(/(^"|"$)/,"'")
+    // console.log(result_of_result);
     
-    let final_result = JSON.parse(result_of_result)
-    console.log(final_result);
-    AJAX.makeList(final_result)
-    AJAX.postForm()
+    // let final_result = JSON.parse(result_of_result)
+    // console.log(final_result);
+    AJAX.makeList(response)
+    // AJAX.postForm()
 })
+let button = document.createElement("button")
+button.innerText = "button"
+document.body.appendChild(button)
+button.onclick = () => {
+    AJAX.get("http://localhost:3000/students/list", (response:any) => {
+    console.log(response)
+    })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // export function test(url:any) {
 //     console.log(url)
 // }

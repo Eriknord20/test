@@ -33,15 +33,17 @@ export function post(url:any, data:any, handler:any) {
     request.send(data)
 }
 export function makeList(data:any) {
+    let jsonList = JSON.parse(data)
+    console.log(jsonList)
     // Create the list element:
     let list = document.createElement('ul')
 
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < jsonList.length; i++) {
         // Create the list item:
         let item = document.createElement('li')
 
         // Set its contents:
-        item.appendChild(document.createTextNode(data[i].first_name))
+        item.appendChild(document.createTextNode(jsonList[i].username))
 
         // Add it to the list:
         list.appendChild(item)
