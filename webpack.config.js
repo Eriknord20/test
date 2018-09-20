@@ -6,7 +6,7 @@ module.exports = {
   mode: 'development',
   output: {
     filename: 'main.js',
-    path: path.resolve(__dirname, 'priv/static')
+    path: path.resolve(__dirname, 'dist')
   },
   resolve: {
       extensions: ['.ts', '.js', '.json']

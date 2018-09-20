@@ -1,3 +1,4 @@
+// import * as tester from '../'
 export function get(url:any, handler:any) {
     let request = new XMLHttpRequest()
 
@@ -32,15 +33,17 @@ export function post(url:any, data:any, handler:any) {
     request.send(data)
 }
 export function makeList(data:any) {
+    let jsonList = JSON.parse(data)
+    console.log(jsonList)
     // Create the list element:
     let list = document.createElement('ul')
 
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < jsonList.length; i++) {
         // Create the list item:
         let item = document.createElement('li')
 
         // Set its contents:
-        item.appendChild(document.createTextNode(data[i].first_name))
+        item.appendChild(document.createTextNode(jsonList[i].username))
 
         // Add it to the list:
         list.appendChild(item)
@@ -50,3 +53,33 @@ export function makeList(data:any) {
     // Finally, return the constructed list:
     return list;
 }
+export function postForm() {
+    let form = document.createElement('form')
+    form.setAttribute('id','postForm')
+    document.body.appendChild(form)
+    let input = document.createElement('input')
+    input.setAttribute('value','')
+    input.setAttribute('name','url')
+    input.setAttribute('type','text')
+    form.appendChild(input)
+    let btn = document.createElement('button')
+    btn.innerText = 'postForm submit'
+    btn.setAttribute('onclick','getPostUrl')
+    btn.setAttribute('form','postForm')
+    btn.addEventListener("click", () => {
+        let postUrl = input.value
+        console.log("postUrl")
+        // tester.test(postUrl)
+    })
+    document.body.appendChild(btn)
+    console.log(form)
+    console.log(btn)
+
+
+    return form
+}
+let div = document.createElement("div");
+document.body.appendChild(div);
+div.setAttribute('id','divTest');
+let divTest = document.getElementById("divTest");
+
